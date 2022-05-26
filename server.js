@@ -61,20 +61,21 @@ app.post('/api/notes', (req, res) => {
 
 
 //delete route unfinished
-app.delete('/api/notes/:id', (req, res) => {
-  const { id } = req.params;
-  const isDeleted = notes.find(note => note.id === id);
-  if (isDeleted) {
-    console.log (isDeleted);
-    notes = notes.filter(notes => notes.id ==! id);
-    res.status(200).json(isDeleted);
-  } else {
-    console.log(isDeleted);
-    res
-      .status(404)
-      .json({message: 'Note that your trying to delete does not exist'});
-
-  }
+app.delete('api/notes/:id', (req, res) =>{
+  fs.readFile('./db/db.json', 'utf-8', (err, data) =>{
+    const { id } = req.params;
+    const isDeleted = notes.find(note => note.id === id);
+    if (isDeleted){
+      console.log(deleted);
+      notes = notes.filter(notes => notes.id ==! id);
+      res.status(200).json(isDeleted);
+    } else {
+      console.log(deleted);
+      res
+        .status(404)
+        .json({message: 'The note your trying to delete cannot be found'});
+    }
+  });
 });
 
 
