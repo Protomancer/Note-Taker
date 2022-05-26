@@ -3,11 +3,15 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const { stringify } = require('querystring');
+const req = require('express/lib/request');
+const res = require('express/lib/response');
+const { Server } = require('http');
 
 //Initialize app and create the port
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+let notes = [];
 
 
 //parsing and static folders
@@ -43,7 +47,7 @@ app.post('/api/notes', (req, res) => {
     const dataParsing = JSON.parse(data);
     const newNotes = req.body;
     console.table(newNotes)
-    newNotes.id = 7
+    newNotes.id = Math.floor(Math.random() * 1000);
     console.table(newNotes)
 
     dataParsing.push(newNotes);
@@ -57,23 +61,21 @@ app.post('/api/notes', (req, res) => {
 
 
 //delete route unfinished
+app.delete('/api/notes/:id', (req, res) => {
+  const { id } = req.params;
+  const isDeleted = notes.find(note => note.id === id);
+  if (isDeleted) {
+    console.log (isDeleted);
+    notes = notes.filter(notes => notes.id ==! id);
+    res.status(200).json(isDeleted);
+  } else {
+    console.log(isDeleted);
+    res
+      .status(404)
+      .json({message: 'Note that your trying to delete does not exist'});
 
-app.get("/api/notes/:id", function (req, res) {
-  res.json(notes[req.params.id]);
+  }
 });
-
-app.delete("./db/db.json/:id", function (req, res) {
-  notes.splice(req.params.id, 1);
-  changeDb();
-  console.log("Note Deleted " + req.params.id);
-});
-
-function changeDb() {
-  fs.writeFile("db/db.json", JSON.stringify(notes, '\t'), err => {
-    if (err) throw err;
-    return true;
-  });
-}
 
 
 app.listen(PORT, () => console.log(`listening on PORT: ${PORT}`));
