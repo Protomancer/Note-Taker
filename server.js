@@ -6,6 +6,7 @@ const { stringify } = require('querystring');
 const req = require('express/lib/request');
 const res = require('express/lib/response');
 const { Server } = require('http');
+const { json } = require('express/lib/response');
 
 //Initialize app and create the port
 const app = express();
@@ -30,7 +31,7 @@ app.get('/notes', (req, res) =>
 );
 
 
-//create a list of routes
+
 
 //Main get route
 app.get('/api/notes', (req, res) => {
@@ -49,7 +50,6 @@ app.post('/api/notes', (req, res) => {
     console.table(newNotes)
     newNotes.id = Math.floor(Math.random() * 1000);
     console.table(newNotes)
-
     dataParsing.push(newNotes);
     fs.writeFile('./db/db.json', JSON.stringify(dataParsing), (err) => {
       if (err) throw err;
@@ -60,17 +60,21 @@ app.post('/api/notes', (req, res) => {
 
 
 
-//delete route unfinished
-app.delete('api/notes/:id', (req, res) =>{
-  fs.readFile('./db/db.json', 'utf-8', (err, data) =>{
+//delete route 
+app.delete('/api/notes/:id', (req, res) =>{
+  fs.readFile('./db/db.json', 'utf-8', (err, notes) =>{
+    if (err) throw err;
     const { id } = req.params;
-    const isDeleted = notes.find(note => note.id === id);
+    let allNotes = JSON.parse(notes);
+    const isDeleted = allNotes.find(note => note.id === parseInt(id));
     if (isDeleted){
-      console.log(deleted);
-      notes = notes.filter(notes => notes.id ==! id);
-      res.status(200).json(isDeleted);
+      notes = allNotes.filter(note => note.id !== parseInt(id));
+      fs.writeFile('./db/db.json', JSON.stringify(notes), (err) => {
+        if (err) throw err;
+        res.status(200).json(notes);
+      });
+      console.log(notes)
     } else {
-      console.log(deleted);
       res
         .status(404)
         .json({message: 'The note your trying to delete cannot be found'});
