@@ -2,9 +2,6 @@
 
 -This is a homework project for UofA Coding boot camp.
 
--It is built to take notes using start code given and server.js code that I have built with assistance from
-my teachers and tutors and a great deal more time than I would like to admit.
-
 -This app allows you to take down notes, save them and delete them in a simple and easy to use manner.
 
 -In making this app work I have learned a great deal about routing C.R.U.D
@@ -29,14 +26,17 @@ my teachers and tutors and a great deal more time than I would like to admit.
 -To delete notes you can just hit the red trash icon on the left side where the notes are stored.
 
 ## In action
+
 https://drive.google.com/file/d/1FZVaf-04JJ6-qMzM_-e2Un3msbBEOndl/view
 
 ## Credits
+
 UofA coding boot camp.
 My teacher Farish.
 My Tutor Dru Sanchez.
 
 ## License 
+
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 
